@@ -4,14 +4,20 @@ from colour import Color
 
 
 def create_input(nr_bivariate):
-    return [create_bivariate_sample() for i in range(nr_bivariate)]
+    return [random_rotate(create_bivariate_sample()) for i in range(nr_bivariate)]
 
 def create_bivariate_sample():
-    return (create_sample(),create_sample())
+    return np.array([create_sample(),create_sample()])
+
+def random_rotate(array):
+    theta = np.random.uniform(low=0, high=(2 * np.pi))
+    rotMatrix = np.array([[np.cos(theta), -np.sin(theta)],
+                         [np.sin(theta),  np.cos(theta)]])
+    return np.dot(rotMatrix, array)
 
 def create_sample():
-    offset = np.random.uniform(low=3, high=7)
-    width = np.random.uniform(high=2)
+    offset = np.random.uniform(low=-3, high=3)
+    width = np.random.uniform(low=0, high=2)
     return np.array([offset + np.random.normal(offset, width) for i in range(200)])
 
 def main():
